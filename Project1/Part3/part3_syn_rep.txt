@@ -1,0 +1,469 @@
+
+                      Design Compiler Graphical
+                            DC Ultra (TM)
+                             DFTMAX (TM)
+                         Power Compiler (TM)
+                           DesignWare (R)
+                           DC Expert (TM)
+                         Design Vision (TM)
+                          HDL Compiler (TM)
+                         VHDL Compiler (TM)
+                            DFT Compiler
+                        Library Compiler (TM)
+                         Design Compiler(R)
+
+         Version J-2014.09-SP5-2 for RHEL64 -- Jul 11, 2015
+               Copyright (c) 1988-2015 Synopsys, Inc.
+
+This software and the associated documentation are confidential and 
+proprietary to Synopsys, Inc. Your use or disclosure of this software 
+is subject to the terms and conditions of a written license agreement 
+between you, or your company, and Synopsys, Inc.
+
+Initializing...
+##############################################
+# Setup: fill out the following parameters: name of clock signal, clock period (ns),
+# reset signal name (if used), name of top-level module, name of source file
+set CLK_NAME "clk";
+clk
+set CLK_PERIOD 1.5;
+1.5
+set RST_NAME "reset";
+reset
+set TOP_MOD_NAME "part3_mac";
+part3_mac
+set SRC_FILE "part3_mac.sv";
+part3_mac.sv
+# If you have multiple source files, change the line above to list them all like this:
+# set SRC_FILE [list "file1.sv" "file2.sv"];
+###############################################
+source setupdc.tcl
+NangateOpenCellLibrary_typical.db dw_foundation.sldb
+file mkdir work_synth
+define_design_lib WORK -path work_synth
+1
+analyze $SRC_FILE -format sverilog
+Running PRESTO HDLC
+Searching for ./part3_mac.sv
+Compiling source file ./part3_mac.sv
+Presto compilation completed successfully.
+Loading db file '/home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db'
+Loading db file '/usr/local/synopsys/syn/libraries/syn/dw_foundation.sldb'
+1
+elaborate -work WORK $TOP_MOD_NAME
+Loading db file '/usr/local/synopsys/syn/libraries/syn/gtech.db'
+Loading db file '/usr/local/synopsys/syn/libraries/syn/standard.sldb'
+  Loading link library 'NangateOpenCellLibrary'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+
+Inferred memory devices in process
+	in routine part3_mac line 18 in file
+		'./part3_mac.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     product_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|     en_reg_reg      | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine part3_mac line 32 in file
+		'./part3_mac.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      testf_reg      | Flip-flop |  24   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine part3_mac line 49 in file
+		'./part3_mac.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|        f_reg        | Flip-flop |  24   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine part3_mac line 66 in file
+		'./part3_mac.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    valid_out_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Elaborated 1 design.
+Current design is now 'part3_mac'.
+1
+###### CLOCKS AND PORTS #######
+set CLK_PORT [get_ports $CLK_NAME]
+{clk}
+set TMP1 [remove_from_collection [all_inputs] $CLK_PORT]
+{reset a[11] a[10] a[9] a[8] a[7] a[6] a[5] a[4] a[3] a[2] a[1] a[0] b[11] b[10] b[9] b[8] b[7] b[6] b[5] b[4] b[3] b[2] b[1] b[0] valid_in}
+set INPUTS [remove_from_collection $TMP1 $RST_NAME]
+{a[11] a[10] a[9] a[8] a[7] a[6] a[5] a[4] a[3] a[2] a[1] a[0] b[11] b[10] b[9] b[8] b[7] b[6] b[5] b[4] b[3] b[2] b[1] b[0] valid_in}
+create_clock -period $CLK_PERIOD [get_ports clk]
+1
+# set delay for inputs to be 0.2ns
+set_input_delay 0.2 -max -clock clk $INPUTS
+1
+set_output_delay 0.2 -max -clock clk [all_outputs]
+1
+###### OPTIMIZATION #######
+set_max_area 0 
+1
+###### RUN #####
+compile_ultra
+Information: Performing power optimization. (PWR-850)
+Alib files are up-to-date.
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | J-2014.09-DWBB_201409.5.2 |   *     |
+| Licensed DW Building Blocks        | J-2014.09-DWBB_201409.5.2 |   *     |
+============================================================================
+
+Information: Sequential output inversion is enabled.  SVF file must be used for formal verification. (OPT-1208)
+
+Information: There are 4 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+
+Loaded alib file './alib-52/NangateOpenCellLibrary_typical.db.alib'
+  Building model 'DW01_NAND2'
+Information: Ungrouping 0 of 1 hierarchies before Pass 1 (OPT-775)
+Information: State dependent leakage is now switched from on to off.
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'part3_mac'
+ Implement Synthetic for 'part3_mac'.
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+
+  Beginning Mapping Optimizations  (Ultra High effort)
+  -------------------------------
+  Mapping Optimization (Phase 1)
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:04    1542.0      0.33       3.2       9.1                           38872.8398
+    0:00:04    1542.0      0.33       3.2       9.1                           38872.8398
+    0:00:04    1542.0      0.33       3.2       9.1                           38872.8398
+    0:00:04    1541.7      0.33       3.1       9.1                           38858.4883
+  Re-synthesis Optimization (Phase 1)
+  Re-synthesis Optimization (Phase 2)
+  Global Optimization (Phase 1)
+  Global Optimization (Phase 2)
+  Global Optimization (Phase 3)
+  Global Optimization (Phase 4)
+  Global Optimization (Phase 5)
+  Global Optimization (Phase 6)
+  Global Optimization (Phase 7)
+  Global Optimization (Phase 8)
+  Global Optimization (Phase 9)
+  Global Optimization (Phase 10)
+  Global Optimization (Phase 11)
+  Global Optimization (Phase 12)
+  Global Optimization (Phase 13)
+  Global Optimization (Phase 14)
+  Global Optimization (Phase 15)
+  Global Optimization (Phase 16)
+  Global Optimization (Phase 17)
+  Global Optimization (Phase 18)
+  Global Optimization (Phase 19)
+  Global Optimization (Phase 20)
+  Global Optimization (Phase 21)
+  Global Optimization (Phase 22)
+  Global Optimization (Phase 23)
+  Global Optimization (Phase 24)
+  Global Optimization (Phase 25)
+  Global Optimization (Phase 26)
+  Global Optimization (Phase 27)
+  Global Optimization (Phase 28)
+  Global Optimization (Phase 29)
+  Global Optimization (Phase 30)
+  Global Optimization (Phase 31)
+  Mapping 'part3_mac_DP_OP_18_124_5558_3'
+Information: Added key list 'DesignWare' to design 'part3_mac'. (DDB-72)
+    0:00:05    1176.3      0.11       0.6       0.0                           25381.4180
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:05    1176.3      0.11       0.6       0.0                           25381.4180
+    0:00:05    1176.3      0.11       0.6       0.0                           25381.4180
+    0:00:05    1198.3      0.11       0.6       0.0                           26311.3027
+    0:00:05    1198.3      0.11       0.6       0.0                           26311.3027
+    0:00:06    1218.3      0.07       0.4       0.0                           26995.9727
+    0:00:06    1218.3      0.07       0.4       0.0                           26995.9727
+    0:00:06    1218.3      0.06       0.4       0.0                           27023.9941
+    0:00:06    1218.3      0.06       0.4       0.0                           27023.9941
+    0:00:07    1216.7      0.06       0.3       0.0                           26977.7305
+    0:00:07    1216.7      0.06       0.3       0.0                           26977.7305
+    0:00:07    1266.7      0.02       0.1       0.0                           28650.0215
+    0:00:07    1266.7      0.02       0.1       0.0                           28650.0215
+    0:00:08    1266.7      0.02       0.1       0.0                           28650.0215
+
+  Beginning Delay Optimization
+  ----------------------------
+    0:00:08    1266.7      0.02       0.1       0.0                           28650.0215
+    0:00:08    1266.7      0.02       0.1       0.0                           28650.0215
+    0:00:08    1266.7      0.02       0.1       0.0                           28650.0215
+    0:00:08    1266.7      0.02       0.1       0.0                           28650.0215
+    0:00:08    1266.7      0.02       0.1       0.0                           28650.0215
+    0:00:08    1266.7      0.02       0.1       0.0                           28650.0215
+    0:00:08    1266.7      0.02       0.1       0.0                           28650.0215
+    0:00:09    1266.7      0.02       0.1       0.0                           28650.0215
+    0:00:09    1264.6      0.00       0.0       0.0                           28430.1992
+    0:00:09    1264.6      0.00       0.0       0.0                           28430.1992
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:09    1264.6      0.00       0.0       0.0                           28430.1992
+    0:00:09    1252.9      0.00       0.0       0.0                           28114.4297
+
+
+  Beginning Leakage Power Optimization  (max_leakage_power 0)
+  ------------------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:09    1252.9      0.00       0.0       0.0                           28114.4297
+  Global Optimization (Phase 32)
+  Global Optimization (Phase 33)
+  Global Optimization (Phase 34)
+  Global Optimization (Phase 35)
+  Global Optimization (Phase 36)
+  Global Optimization (Phase 37)
+  Global Optimization (Phase 38)
+  Global Optimization (Phase 39)
+  Global Optimization (Phase 40)
+  Global Optimization (Phase 41)
+  Global Optimization (Phase 42)
+  Global Optimization (Phase 43)
+  Global Optimization (Phase 44)
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:09    1200.5      0.00       0.0       0.0                           26135.4355
+    0:00:09    1195.4      0.00       0.0       0.0                           25885.6230
+    0:00:09    1195.9      0.00       0.0       0.0                           25906.8223
+    0:00:09    1195.9      0.00       0.0       0.0                           25906.8223
+    0:00:09    1195.9      0.00       0.0       0.0                           25906.8223
+    0:00:10    1194.1      0.00       0.0       0.0                           25849.8320
+    0:00:10    1194.1      0.00       0.0       0.0                           25849.8320
+    0:00:10    1193.0      0.00       0.0       0.0                           25802.9648
+Loading db file '/home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db'
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Information: State dependent leakage is now switched from off to on.
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+1
+report_area
+ 
+****************************************
+Report : area
+Design : part3_mac
+Version: J-2014.09-SP5-2
+Date   : Mon Oct  5 15:54:29 2020
+****************************************
+
+Information: Updating design information... (UID-85)
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db)
+
+Number of ports:                           52
+Number of nets:                           950
+Number of cells:                          862
+Number of combinational cells:            811
+Number of sequential cells:                51
+Number of macros/black boxes:               0
+Number of buf/inv:                        133
+Number of references:                      23
+
+Combinational area:                962.387997
+Buf/Inv area:                       76.874000
+Noncombinational area:             230.621992
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                  1193.009989
+Total area:                 undefined
+1
+report_power
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : part3_mac
+Version: J-2014.09-SP5-2
+Date   : Mon Oct  5 15:54:29 2020
+****************************************
+
+
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db)
+
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+Design        Wire Load Model            Library
+------------------------------------------------
+part3_mac              5K_hvratio_1_1    NangateOpenCellLibrary
+
+
+Global Operating Voltage = 1.1  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000ff
+    Time Units = 1ns
+    Dynamic Power Units = 1uW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+  Cell Internal Power  = 543.5447 uW   (60%)
+  Net Switching Power  = 366.8684 uW   (40%)
+                         ---------
+Total Dynamic Power    = 910.4131 uW  (100%)
+
+Cell Leakage Power     =  26.9430 uW
+
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)
+register         210.6337            9.9338        4.0006e+03          224.5681  (  23.96%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational    332.9111          356.9346        2.2942e+04          712.7883  (  76.04%)
+--------------------------------------------------------------------------------------------------
+Total            543.5449 uW       366.8684 uW     2.6943e+04 nW       937.3564 uW
+1
+report_timing
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : part3_mac
+Version: J-2014.09-SP5-2
+Date   : Mon Oct  5 15:54:29 2020
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: a[8] (input port clocked by clk)
+  Endpoint: testf_reg[22]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  part3_mac          5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  input external delay                     0.20       0.20 f
+  a[8] (in)                                0.00       0.20 f
+  U353/ZN (INV_X1)                         0.02       0.22 r
+  U354/ZN (XNOR2_X1)                       0.05       0.28 r
+  U355/ZN (NAND2_X1)                       0.03       0.31 f
+  U356/Z (BUF_X2)                          0.05       0.36 f
+  U362/ZN (OAI22_X1)                       0.06       0.42 r
+  U370/S (HA_X1)                           0.09       0.51 r
+  U378/S (FA_X1)                           0.12       0.63 f
+  U385/S (FA_X1)                           0.14       0.76 r
+  U366/ZN (NOR2_X1)                        0.03       0.79 f
+  U368/ZN (OAI21_X1)                       0.07       0.86 r
+  U504/ZN (AOI21_X1)                       0.04       0.90 f
+  U505/ZN (INV_X1)                         0.05       0.95 r
+  U657/ZN (NAND2_X1)                       0.03       0.98 f
+  U658/ZN (NAND2_X1)                       0.03       1.01 r
+  U661/ZN (XNOR2_X1)                       0.06       1.07 r
+  U663/ZN (NOR2_X1)                        0.03       1.10 f
+  U154/ZN (AOI21_X1)                       0.07       1.17 r
+  U703/ZN (NAND2_X1)                       0.03       1.20 f
+  U711/ZN (OAI21_X1)                       0.06       1.27 r
+  U748/ZN (AOI21_X2)                       0.05       1.31 f
+  U773/ZN (OAI21_X1)                       0.05       1.36 r
+  U794/ZN (XNOR2_X1)                       0.06       1.42 r
+  U796/ZN (OAI21_X1)                       0.03       1.45 f
+  testf_reg[22]/D (DFF_X1)                 0.01       1.46 f
+  data arrival time                                   1.46
+
+  clock clk (rise edge)                    1.50       1.50
+  clock network delay (ideal)              0.00       1.50
+  testf_reg[22]/CK (DFF_X1)                0.00       1.50 r
+  library setup time                      -0.04       1.46
+  data required time                                  1.46
+  -----------------------------------------------------------
+  data required time                                  1.46
+  data arrival time                                  -1.46
+  -----------------------------------------------------------
+  slack (MET)                                         0.00
+
+
+1
+write -f verilog $TOP_MOD_NAME -output gates.v -hierarchy
+Writing verilog file '/home/home5/xinqiwang/ese507work/proj1/gates.v'.
+1
+quit
+
+Thank you...
